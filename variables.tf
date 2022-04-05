@@ -1,6 +1,6 @@
 variable "architectures" {
   description = <<EOF
-    Instruction set architecture for your Lambda function. Valid values are ["x86_64"] and ["arm64"]. 
+    Instruction set architecture for your Lambda function. Valid values are ["x86_64"] and ["arm64"].
     Default is ["x86_64"]. Removing this attribute, function's architecture stay the same.
   EOF
   type        = list(string)
@@ -21,8 +21,8 @@ variable "cloudwatch_lambda_insights_enabled" {
 
 variable "cloudwatch_logs_retention_in_days" {
   description = <<EOF
-  Specifies the number of days you want to retain log events in the specified log group. Possible values are: 
-  1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0. If you select 0, the events in the 
+  Specifies the number of days you want to retain log events in the specified log group. Possible values are:
+  1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0. If you select 0, the events in the
   log group are always retained and never expire.
   EOF
   type        = number
@@ -57,7 +57,7 @@ variable "lambda_environment" {
 
 variable "event_source_mappings" {
   description = <<EOF
-  Creates event source mappings to allow the Lambda function to get events from Kinesis, DynamoDB and SQS. The IAM role 
+  Creates event source mappings to allow the Lambda function to get events from Kinesis, DynamoDB and SQS. The IAM role
   of this Lambda function will be enhanced with necessary minimum permissions to get those events.
   EOF
   default     = {}
@@ -78,7 +78,7 @@ variable "function_name" {
 
 variable "ignore_external_function_updates" {
   description = <<EOF
-  Ignore updates to the Lambda Function executed externally to the Terraform lifecycle. Set this to `true` if you're 
+  Ignore updates to the Lambda Function executed externally to the Terraform lifecycle. Set this to `true` if you're
   using CodeDeploy, aws CLI or other external tools to update the Lambda Function code."
   EOF
   default     = false
@@ -93,7 +93,7 @@ variable "handler" {
 
 variable "image_config" {
   description = <<EOF
-  The Lambda OCI [image configurations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function#image_config) 
+  The Lambda OCI [image configurations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function#image_config)
   block with three (optional) arguments:
   - *entry_point* - The ENTRYPOINT for the docker image (type `list(string)`).
   - *command* - The CMD for the docker image (type `list(string)`).
@@ -111,10 +111,10 @@ variable "image_uri" {
 
 variable "kms_key_arn" {
   description = <<EOF
-  Amazon Resource Name (ARN) of the AWS Key Management Service (KMS) key that is used to encrypt environment variables. 
-  If this configuration is not provided when environment variables are in use, AWS Lambda uses a default service key. 
-  If this configuration is provided when environment variables are not in use, the AWS Lambda API does not save this 
-  configuration and Terraform will show a perpetual difference of adding the key. To fix the perpetual difference, 
+  Amazon Resource Name (ARN) of the AWS Key Management Service (KMS) key that is used to encrypt environment variables.
+  If this configuration is not provided when environment variables are in use, AWS Lambda uses a default service key.
+  If this configuration is provided when environment variables are not in use, the AWS Lambda API does not save this
+  configuration and Terraform will show a perpetual difference of adding the key. To fix the perpetual difference,
   remove this configuration.
   EOF
   default     = ""
@@ -157,6 +157,12 @@ variable "reserved_concurrent_executions" {
   type        = number
 }
 
+variable "role_name" {
+  description = "The IAM Role name created for the lambda function.  By specifying the name, circular references can be avoided when calling resources requiring the lambda ARN also need the role ARN."
+  default     = ""
+  type        = string
+}
+
 variable "runtime" {
   description = "The runtime environment for the Lambda function you are uploading."
   default     = null
@@ -165,7 +171,7 @@ variable "runtime" {
 
 variable "s3_bucket" {
   description = <<EOF
-  The S3 bucket location containing the function's deployment package. Conflicts with filename and image_uri. 
+  The S3 bucket location containing the function's deployment package. Conflicts with filename and image_uri.
   This bucket must reside in the same AWS region where you are creating the Lambda function.
   EOF
   default     = null
@@ -192,8 +198,8 @@ variable "sns_subscriptions" {
 
 variable "source_code_hash" {
   description = <<EOF
-  Used to trigger updates. Must be set to a base64-encoded SHA256 hash of the package file specified with either 
-  filename or s3_key. The usual way to set this is filebase64sha256('file.zip') where 'file.zip' is the local filename 
+  Used to trigger updates. Must be set to a base64-encoded SHA256 hash of the package file specified with either
+  filename or s3_key. The usual way to set this is filebase64sha256('file.zip') where 'file.zip' is the local filename
   of the lambda function source archive.
   EOF
   default     = ""
@@ -202,8 +208,8 @@ variable "source_code_hash" {
 
 variable "ssm_parameter_names" {
   description = <<EOF
-  List of AWS Systems Manager Parameter Store parameter names. The IAM role of this Lambda function will be enhanced 
-  with read permissions for those parameters. Parameters must start with a forward slash and can be encrypted with the 
+  List of AWS Systems Manager Parameter Store parameter names. The IAM role of this Lambda function will be enhanced
+  with read permissions for those parameters. Parameters must start with a forward slash and can be encrypted with the
   default KMS key.
   EOF
   default     = null
@@ -224,7 +230,7 @@ variable "tracing_config_mode" {
 
 variable "vpc_config" {
   description = <<EOF
-  Provide this to allow your function to access your VPC (if both 'subnet_ids' and 'security_group_ids' are empty then 
+  Provide this to allow your function to access your VPC (if both 'subnet_ids' and 'security_group_ids' are empty then
   vpc_config is considered to be empty or unset, see https://docs.aws.amazon.com/lambda/latest/dg/vpc.html for details).
   EOF
   default     = null
