@@ -1,14 +1,14 @@
 
 
 resource "aws_cloudwatch_log_group" "this" {
-  count             = module.this.enabled ? 1 : 0
+  count             = module.context.enabled ? 1 : 0
   name              = "/aws/lambda/${var.function_name}"
   retention_in_days = var.cloudwatch_logs_retention_in_days
-  tags              = module.this.tags
+  tags              = module.context.tags
 }
 
 resource "aws_lambda_function" "this" {
-  count      = module.this.enabled ? 1 : 0
+  count      = module.context.enabled ? 1 : 0
   depends_on = [aws_cloudwatch_log_group.this]
 
   architectures                  = var.architectures
@@ -69,7 +69,7 @@ data "aws_region" "this" { count = local.enabled ? 1 : 0 }
 data "aws_caller_identity" "this" { count = local.enabled ? 1 : 0 }
 
 locals {
-  enabled     = module.this.enabled
+  enabled     = module.context.enabled
   account_id  = local.enabled ? data.aws_caller_identity.this[0].account_id : ""
   partition   = local.enabled ? data.aws_partition.this[0].partition : ""
   region_name = local.enabled ? data.aws_region.this[0].name : ""

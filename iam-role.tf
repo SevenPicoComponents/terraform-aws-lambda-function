@@ -8,7 +8,7 @@ locals {
 }
 
 data "aws_iam_policy_document" "assume_role_policy" {
-  count = module.this.enabled ? 1 : 0
+  count = module.context.enabled ? 1 : 0
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -30,7 +30,7 @@ resource "aws_iam_role" "this" {
 # Base IAM Role Policy
 #--------------------------------------------------
 data "aws_iam_policy_document" "this" {
-  count = module.this.enabled ? 1 : 0
+  count = module.context.enabled ? 1 : 0
   statement {
     actions = [
       "logs:CreateLogStream",
@@ -44,14 +44,14 @@ data "aws_iam_policy_document" "this" {
 }
 
 resource "aws_iam_policy" "this" {
-  count       = module.this.enabled ? 1 : 0
+  count       = module.context.enabled ? 1 : 0
   description = "Provides minimum Cloudwatch permissions."
   name        = "${local.role_name}-policy"
   policy      = data.aws_iam_policy_document.this[0].json
 }
 
 resource "aws_iam_role_policy_attachment" "this" {
-  count      = module.this.enabled ? 1 : 0
+  count      = module.context.enabled ? 1 : 0
   policy_arn = aws_iam_policy.this[0].arn
   role       = aws_iam_role.this[0].name
 }
