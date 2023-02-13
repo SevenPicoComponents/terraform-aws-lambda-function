@@ -3,7 +3,7 @@ module "label" {
   version    = "0.25.0"
   attributes = [var.function_name]
 
-  context = module.this.context
+  context = module.context.self
 }
 
 data "archive_file" "lambda_zip" {
@@ -20,5 +20,5 @@ module "lambda" {
   handler       = var.handler
   runtime       = var.runtime
 
-  context = module.this.context
+  context = module.context.self
 }
