@@ -4,7 +4,7 @@
 #--------------------------------------------------
 locals {
   service_principal_identifiers = var.lambda_at_edge ? ["edgelambda.amazonaws.com"] : ["lambda.amazonaws.com"]
-  role_name                          = var.role_name == "" ? "${var.function_name}-${local.region_name}" : var.role_name
+  role_name                     = var.role_name == "" ? "${var.function_name}-${local.region_name}" : var.role_name
 }
 
 data "aws_iam_policy_document" "assume_role_policy" {
@@ -30,8 +30,11 @@ resource "aws_iam_role" "this" {
 # Base IAM Role Policy
 #--------------------------------------------------
 data "aws_iam_policy_document" "this" {
-  count = module.context.enabled ? 1 : 0
+  count                   = module.context.enabled ? 1 : 0
+  source_policy_documents = var.lambda_role_source_policy_documents
+
   statement {
+    sid = "Logging"
     actions = [
       "logs:CreateLogStream",
       "logs:PutLogEvents"

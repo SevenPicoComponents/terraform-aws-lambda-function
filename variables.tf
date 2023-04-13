@@ -239,3 +239,9 @@ variable "vpc_config" {
     subnet_ids         = list(string)
   })
 }
+
+variable "lambda_role_source_policy_documents" {
+  description = "Provide a list of JSON policy documents that need to be added to the Lamba's execution IAM Role."
+  default     = []
+  type        = list(string)
+}
