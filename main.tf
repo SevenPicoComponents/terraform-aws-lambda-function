@@ -1,10 +1,11 @@
 locals {
-  enabled     = module.context.enabled
+  enabled = module.context.enabled
 }
 
 resource "aws_cloudwatch_log_group" "this" {
   count             = module.context.enabled ? 1 : 0
   name              = "/aws/lambda/${var.function_name}"
+  kms_key_id        = var.cloudwatch_logs_kms_key_arn
   retention_in_days = var.cloudwatch_logs_retention_in_days
   tags              = module.context.tags
 }
